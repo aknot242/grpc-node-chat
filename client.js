@@ -1,4 +1,5 @@
 let grpc = require("grpc");
+let parseArgs = require("minimist");
 var protoLoader = require("@grpc/proto-loader");
 var readline = require("readline");
 
@@ -18,13 +19,22 @@ var proto = grpc.loadPackageDefinition(
   })
 );
 
-const REMOTE_SERVER = "0.0.0.0:5001";
 
 let username;
 
+let argv = parseArgs(process.argv.slice(2), {
+  string: "target"
+});
+
+if (argv.target) {
+  target = argv.target;
+} else {
+  target = "0.0.0.0:5001";
+}
+
 //Create gRPC client
 let client = new proto.example.Chat(
-  REMOTE_SERVER,
+  target,
   grpc.credentials.createInsecure()
 );
 
@@ -48,7 +58,7 @@ function onData(message) {
 }
 
 //Ask user name than start the chat
-rl.question("What's ur name? ", answer => {
+rl.question("What is your name? ", answer => {
   username = answer;
 
   startChat();

@@ -10,8 +10,21 @@ Check the full article in: https://techblog.fexcofts.com/2018/07/20/grpc-nodejs-
 
 - Start Server:
 
-    ``$ node server``
+    ``$ node server --target 0.0.0.0:5001``
 
 - Start client:
 
-    ``$ node client``
+    ``$ node client --target 0.0.0.0:5001``
+
+
+## Docker instructions
+
+### Build Container
+```
+docker build -t aknot242/grpc-node-chat .
+```
+
+### Start Container
+```
+docker run -p 50054:5001 -d --restart unless-stopped aknot242/grpc-node-chat
+```
